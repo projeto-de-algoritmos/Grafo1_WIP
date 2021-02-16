@@ -24,9 +24,7 @@ const getGameJson = (html) => {
 const parseGameJson = (jsonGames) => {
     let games = jsonGames['rgApps'];
     for (let key in games) {
-        let gameName = games[key].name.replace(/[^a-zA-Z ]/g,'');
-        gameName = gameName.replace(/\s/g, '_');
-        let link = 'https://store.steampowered.com/app/' + key + '/' + gameName;
+        let link = 'https://store.steampowered.com/app/' + key + '/' + games[key]['url_name'];
         games[key]['link'] = link;
         games[key]['discount_block'] = getGamePrice(games[key]['discount_block']);
         delete games[key]['descids']
@@ -34,10 +32,10 @@ const parseGameJson = (jsonGames) => {
     return games;
 }
 
-const getLinksHtml = (html) => {
+const getListOfGames = (html) => {
     const jsonGames = getGameJson(html);
     const jsonParsed = parseGameJson(jsonGames);
-    console.log(jsonParsed);
+    return jsonParsed;
 }
 
-module.exports = { getLinksHtml };
+module.exports = { getListOfGames };

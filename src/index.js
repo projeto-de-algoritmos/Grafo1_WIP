@@ -1,15 +1,21 @@
 const crawler = require('./crawler');
 const parser = require('./parser');
 
-async function main() {
-    const htmlFound = await crawler.getHtml({
-        url: 'https://store.steampowered.com/app/105600/Terraria/'
+
+const getGameSiteHtml = async (url) => {
+    return await crawler.getHtml({
+        url: url
     }).then(function(response) {
         if(response.ok) {
             return response.text();
         }
     });
-    parser.getLinksHtml(htmlFound);
+}
+
+async function main() {
+    const htmlFound = await getGameSiteHtml('https://store.steampowered.com/app/1293160/The_Medium/');
+    const gamesJson = parser.getListOfGames(htmlFound);
+    console.log(gamesJson);
 }
 
 main();
