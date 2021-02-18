@@ -9,7 +9,7 @@ const getGamePrice = (html) => {
 
 const getGameJson = (html) => {
     const $ = cheerio.load(html);
-    let json; 
+    let json;
     $("script").map((_, script) => {
         script.children.map(child => {
             const regexResponse = regex.exec(child.data);
@@ -19,6 +19,25 @@ const getGameJson = (html) => {
         });
     });
     return json;
+}
+
+const buildFirstGameJson = (html, url) => {
+    const $ = cheerio.load(html);
+    const splittedUrl = url.split("/");
+    const urlName = splittedUrl.pop()
+    const key = splittedUrl.pop()
+    let value = {};
+    value[key] = {
+        name: $("div.apphub_AppName").first().text(),
+        url_name: urlName,
+        discount_block: $("meta[itemprop = 'price']").first().attr().content,
+        small_capsulev5: $("meta[itemprop='image']").first().attr().content,
+        os_windows: true,
+        os_macos: $("div[data-os = 'mac']").first().attr() !== undefined ? true : false,
+        os_linux: $("div[data-os = 'linux']").first().attr() !== undefined ? true : false,
+        link: url
+    }
+    return value;
 }
 
 const parseGameJson = (jsonGames) => {
@@ -38,4 +57,4 @@ const getListOfGames = (html) => {
     return jsonParsed;
 }
 
-module.exports = { getListOfGames };
+module.exports = { getListOfGames, buildFirstGameJson };

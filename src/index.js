@@ -4,6 +4,7 @@ const parser = require('./parser');
 const Graph = require('./models/graph');
 const Game = require('./models/game');
 const path = require("path");
+const { html } = require('cheerio');
 
 const app = new express();
 
@@ -20,12 +21,13 @@ const getGameSiteHtml = async (url) => {
 }
 const getFirstGames = async (url) => {
     const htmlFound = await getGameSiteHtml(url);
+    const firstGameJson = parser.buildFirstGameJson(htmlFound, url);
     const gamesJson = parser.getListOfGames(htmlFound);
-    return gamesJson;
+    return Object.assign(firstGameJson, gamesJson);
 }
 
 async function main() {
-    let firstJsonGames = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium/');
+    let firstJsonGames = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium');
     // Create Graph for games
     let graph = new Graph();
     for(let key in firstJsonGames) {
