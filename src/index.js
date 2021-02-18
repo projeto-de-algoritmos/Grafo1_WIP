@@ -1,7 +1,13 @@
+const express = require('express');
 const crawler = require('./crawler');
 const parser = require('./parser');
 const Graph = require('./models/graph');
 const Game = require('./models/game');
+const path = require("path");
+
+const app = new express();
+
+app.listen(3000);
 
 const getGameSiteHtml = async (url) => {
     return await crawler.getHtml({
@@ -49,3 +55,8 @@ async function main() {
 }
 
 main();
+
+app.get('/', function(_, response){
+    console.log();
+    response.sendFile(path.join(__dirname + '/view/main.html'));
+});
