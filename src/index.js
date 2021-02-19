@@ -27,7 +27,7 @@ const getFirstGames = async (url) => {
     return Object.assign(firstGameJson, gamesJson);
 }
 
-const bfs = async (graph, firstListGameJson) => {
+const bfs = async (graph, firstListGameJson, depth) => {
     let queue = [];
     let node = graph.adjList.keys().next().value
     queue.push(node);
@@ -36,7 +36,7 @@ const bfs = async (graph, firstListGameJson) => {
             const htmlFound = await getGameSiteHtml(node.link);
             firstListGameJson = parser.getListOfGames(htmlFound);
         }
-        queue.shift(individualNode)
+        queue.shift();
         for (let key in firstListGameJson) {
             let gameJson = firstListGameJson[key];
             delete firstListGameJson[key];
@@ -44,11 +44,10 @@ const bfs = async (graph, firstListGameJson) => {
             queue.push(game);
             graph.addEdge(individualNode, game);
         }
-        if(graph.adjList.size > 48) {
+        if(graph.adjList.size > depth) {
             console.log("STOP");
             break;
         }
-        // console.log(individualNode)
     }
 }
 
@@ -57,7 +56,7 @@ async function main() {
     // Create Graph for games
     let graph = new Graph(new Game(1293160, firstListGameJson[1293160]));
     delete firstListGameJson[1293160];
-    await bfs(graph, firstListGameJson)
+    await bfs(graph, firstListGameJson, 20)
     graph.printGraph();
 }
 
