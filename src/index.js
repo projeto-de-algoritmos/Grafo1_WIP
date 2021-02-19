@@ -27,19 +27,20 @@ const getFirstGames = async (url) => {
 }
 
 async function main() {
-    let firstJsonGames = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium');
+    let firstListGameJson = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium');
+    console.log(firstListGameJson)
     // Create Graph for games
     let graph = new Graph();
-    for(let key in firstJsonGames) {
-        let gameJson = firstJsonGames[key];
+    for(let key in firstListGameJson) {
+        let gameJson = firstListGameJson[key];
         let game = new Game(key, gameJson);
 
         // Add recomended games of first game as a vertex of graph
         graph.addVertex(game);
 
-        var countKey = Object.keys(firstJsonGames).length;
+        var countKey = Object.keys(firstListGameJson).length;
         if(countKey < 150) {
-            const url = firstJsonGames[key]['link'];
+            const url = firstListGameJson[key]['link'];
             console.log(url);
             const htmlFound = await getGameSiteHtml(url);
             const gamesJson = parser.getListOfGames(htmlFound);
@@ -49,7 +50,7 @@ async function main() {
                 graph.addEdge(game, new Game(index, gamesJson[index]))
             }
 
-            firstJsonGames = Object.assign(firstJsonGames, gamesJson);
+            firstListGameJson = Object.assign(firstListGameJson, gamesJson);
         }
     }
 
