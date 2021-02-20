@@ -43,10 +43,14 @@ const buildFirstGameJson = (html, url) => {
 const parseGameJson = (jsonGames) => {
     let games = jsonGames['rgApps'];
     for (let key in games) {
-        let link = 'https://store.steampowered.com/app/' + key + '/' + games[key]['url_name'];
-        games[key]['link'] = link;
-        games[key]['discount_block'] = getGamePrice(games[key]['discount_block']);
-        delete games[key]['descids']
+        if (!games[key]['name'].includes("Soundtrack")) {
+            let link = 'https://store.steampowered.com/app/' + key + '/' + games[key]['url_name'];
+            games[key]['link'] = link;
+            games[key]['discount_block'] = getGamePrice(games[key]['discount_block']);
+            delete games[key]['descids']
+        } else {
+            delete games[key]
+        }
     }
     return games;
 }
