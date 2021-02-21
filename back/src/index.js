@@ -47,11 +47,11 @@ const bfs = async (graph, listInstaJson, depth) => {
     }
 }
 
-async function main() {
+async function main(instaLink) {
     // Create Graph for Insta Profile
-    const depth = 200;
+    const depth = 50;
     let graph = new Graph(depth);
-    let firstProfile = await getFirstProfile('https://www.instagram.com/quebrandootabu', graph);
+    let firstProfile = await getFirstProfile(instaLink, graph);
 
     await bfs(graph, firstProfile, depth)
     return graph.printGraph();

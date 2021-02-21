@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
-import { DataSyncService, DiagramComponent, PaletteComponent } from 'gojs-angular';
+import { DataSyncService, DiagramComponent } from 'gojs-angular';
 import * as _ from 'lodash';
 import { AppService } from './services/app.service';
 
@@ -16,15 +16,16 @@ export class AppComponent implements OnInit {
 
   public diagramNodeData: Array<go.ObjectData> = [];
   public diagramLinkData: Array<go.ObjectData> = [];
+  public firstInsta: string = 'https://www.instagram.com/quebrandootabu';
 
   constructor(private appService : AppService) {}
 
   ngOnInit() {
-    this.getGames();
+    this.search();
   }
 
-  getGames() {
-    this.appService.getData().subscribe((result) =>  {
+  search() {
+    this.appService.getData(this.firstInsta).subscribe((result) =>  {
       this.diagramNodeData = result['obj2'];
       this.diagramLinkData = result['obj'];
 
@@ -49,7 +50,9 @@ export class AppComponent implements OnInit {
         {
           linkKeyProperty: 'key' // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
         }
-      )
+      ),
+      initialAutoScale: go.Diagram.UniformToFill,
+      layout: $(go.LayeredDigraphLayout)
     });
   
     // define the Node template
@@ -60,7 +63,7 @@ export class AppComponent implements OnInit {
           { fill: "CornflowerBlue", stroke: "black", spot1: new go.Spot(0, 0, 5, 5), spot2: new go.Spot(1, 1, -5, -5) }),
         $(go.TextBlock,
           { font: "bold 10pt helvetica, bold arial, sans-serif", textAlign: "center", maxSize: new go.Size(100, NaN) },
-          new go.Binding("text", "text"))
+          new go.Binding("text", "name"))
       );
 
     // replace the default Link template in the linkTemplateMap
@@ -78,14 +81,14 @@ export class AppComponent implements OnInit {
               stroke: "#555555",
               margin: 4
             },
-            new go.Binding("text", "text"))
+            new go.Binding("text", "name"))
         )
       );
   
     return diagram;
   }
 
-  public diagramDivClassName: string = 'myDiagramDiv';
+  public diagramDivClassName: string = 'myDiagram';
   public diagramModelData = { prop: 'value' };
   public skipsDiagramUpdate = false;
   

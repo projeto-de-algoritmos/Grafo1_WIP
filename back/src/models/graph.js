@@ -38,7 +38,7 @@ class Graph {
                 obj.push({ from: parseInt(i.key), to: parseInt(j.key) })
             }
 
-            obj2.push({ key: parseInt(i.key), text: i.name })
+            obj2.push({ key: parseInt(i.key), ...i })
         }
 
         return { obj2, obj }

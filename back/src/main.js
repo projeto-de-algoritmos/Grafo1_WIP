@@ -9,8 +9,9 @@ app.use(express.json());
 app.use(express.static("express"));
 
 app.use('/', async function(req,res) {
+    console.log(req.query.firstInsta);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    var result = await main.main();
+    var result = await main.main(req.query.firstInsta);
     res.json(result);
     //__dirname : It will resolve to your project folder.
 });

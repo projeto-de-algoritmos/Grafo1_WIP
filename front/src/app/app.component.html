@@ -1,9 +1,23 @@
-<h1>Game Search</h1>
+<h1>InstaLink</h1>
 
-Diagram
-<gojs-diagram #myDiagram [initDiagram]='initDiagram' [nodeDataArray]='diagramNodeData' [linkDataArray]='diagramLinkData'
-  [divClassName]='diagramDivClassName' [modelData]='diagramModelData' [skipsDiagramUpdate]='skipsDiagramUpdate'
-  (modelChange)='diagramModelChange($event)'>
-</gojs-diagram>
+<mat-label>Digite o insta para mostrar o seu grafo de follow</mat-label>
+<br />
+<input matInput [(ngModel)]="firstInsta">
+<br />
+<button mat-button color="primary" (click)="search()">Procurar</button>
 
-<button mat-button (click)="getGames()">Get</button>
+<br />
+
+<h3>Diagram</h3>
+
+<div class="myDiagramDiv">
+  <gojs-diagram #myDiagram
+    [initDiagram]='initDiagram'
+    [nodeDataArray]='diagramNodeData'
+    [linkDataArray]='diagramLinkData'
+    [divClassName]='diagramDivClassName'
+    [modelData]='diagramModelData'
+    [skipsDiagramUpdate]='skipsDiagramUpdate'
+    (modelChange)='diagramModelChange($event)'>
+  </gojs-diagram>
+</div>
