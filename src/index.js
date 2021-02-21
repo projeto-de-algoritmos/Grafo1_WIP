@@ -13,6 +13,7 @@ const getGameSiteHtml = async (url) => {
         }
     });
 }
+
 const getFirstGames = async (url) => {
     const htmlFound = await getGameSiteHtml(url);
     const firstGameJson = parser.buildFirstGameJson(htmlFound, url);
@@ -20,33 +21,36 @@ const getFirstGames = async (url) => {
     return Object.assign(firstGameJson, gamesJson);
 }
 
-async function main() {
-    let firstJsonGames = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium');
-    // Create Graph for games
-    let graph = new Graph();
-    for(let key in firstJsonGames) {
-        let gameJson = firstJsonGames[key];
-        let game = new Game(key, gameJson);
-
-        // Add recomended games of first game as a vertex of graph
-        graph.addVertex(game);
-
-        var countKey = Object.keys(firstJsonGames).length;
-        if(countKey < 50) {
-            const url = firstJsonGames[key]['link'];
-            // console.log(url);
-            const htmlFound = await getGameSiteHtml(url);
-            const gamesJson = parser.getListOfGames(htmlFound);
-
-            for (let index in gamesJson) {
-                // Creates an edge for a game and recomended games, and create a vertex if a game don't exist
-                graph.addEdge(game, new Game(index, gamesJson[index]))
-            }
-
-            firstJsonGames = Object.assign(firstJsonGames, gamesJson);
+const bfs = async (graph, firstListGameJson, depth) => {
+    let queue = [];
+    let node = graph.adjList.keys().next().value
+    queue.push(node);
+    for(let individualNode of queue) {
+        if(graph.adjList.size > depth) {
+            console.log("STOP");
+            break;
+        }
+        queue.shift();
+        if (individualNode.key !== 1293160){
+            const htmlFound = await getGameSiteHtml(individualNode.link);
+            firstListGameJson = parser.getListOfGames(htmlFound);
+        }
+        for (let key in firstListGameJson) {
+            let gameJson = firstListGameJson[key];
+            delete firstListGameJson[key];
+            let game = new Game(key, gameJson);
+            queue.push(game);
+            graph.addEdge(individualNode, game);
         }
     }
+}
 
+async function main() {
+    let firstListGameJson = await getFirstGames('https://store.steampowered.com/app/1293160/The_Medium');
+    // Create Graph for games
+    let graph = new Graph(new Game(1293160, firstListGameJson[1293160]));
+    delete firstListGameJson[1293160];
+    await bfs(graph, firstListGameJson, 100)
     return graph.printGraph();
 }
 

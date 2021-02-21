@@ -1,6 +1,6 @@
 class Graph {
-    constructor() {
-        this.adjList = new Map()
+    constructor(firstGame) {
+        this.adjList = new Map().set(firstGame, []);
     }
 
     addVertex(game) {
@@ -17,12 +17,8 @@ class Graph {
     }
 
     addEdge(gameFather, gameSon) {
-        this.adjList.forEach((_, value) => { 
-            if (value.key === gameFather.key) {
-                this.adjList.get(value).push(gameSon)
-                this.addVertex(gameSon);
-            }
-        });
+        this.adjList.get(gameFather).push(gameSon)
+        this.addVertex(gameSon);
     }
 
     printGraph() {
@@ -41,6 +37,8 @@ class Graph {
 
             obj2.push({ key: i.key, text: i.name })
         }
+
+        console.log({ obj, obj2 });
 
         return { obj, obj2 }
     }
