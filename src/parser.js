@@ -1,11 +1,6 @@
 const cheerio = require('cheerio');
 
 
-const getGamePrice = (html) => {
-    const $ = cheerio.load(html);
-    return $('div.discount_final_price').first().text();
-}
-
 const getProfileJson = (html, regex) => {
     const $ = cheerio.load(html);
     let json;
@@ -23,25 +18,6 @@ const getProfileJson = (html, regex) => {
     return json;
 }
 
-const buildFirstGameJson = (html, url) => {
-    const $ = cheerio.load(html);
-    const splittedUrl = url.split("/");
-    const urlName = splittedUrl.pop()
-    const key = splittedUrl.pop()
-    let value = {};
-    value[key] = {
-        name: $("div.apphub_AppName").first().text(),
-        url_name: urlName,
-        discount_block: $("meta[itemprop = 'price']").first().attr().content,
-        small_capsulev5: $("meta[itemprop='image']").first().attr().content,
-        os_windows: true,
-        os_macos: $("div[data-os = 'mac']").first().attr() !== undefined ? true : false,
-        os_linux: $("div[data-os = 'linux']").first().attr() !== undefined ? true : false,
-        link: url
-    }
-    return value;
-}
-
 const buildFirstProfileJson = (html, url) => {
     const firstProfile = getProfileJson(html, /\{"@context":.*}/);
     const $ = cheerio.load(html);
@@ -54,21 +30,6 @@ const buildFirstProfileJson = (html, url) => {
         profile_image: $("meta[property = 'og:image']").first().attr().content,
     }
     return value;
-}
-
-const parseGameJson = (jsonGames) => {
-    let games = jsonGames['rgApps'];
-    for (let key in games) {
-        if (!games[key]['name'].includes("Soundtrack")) {
-            let link = 'https://store.steampowered.com/app/' + key + '/' + games[key]['url_name'];
-            games[key]['link'] = link;
-            games[key]['discount_block'] = getGamePrice(games[key]['discount_block']);
-            delete games[key]['descids']
-        } else {
-            delete games[key]
-        }
-    }
-    return games;
 }
 
 const parseProfileJson = (jsonProfile) => {
@@ -87,12 +48,6 @@ const parseProfileJson = (jsonProfile) => {
     return profilesParsed;
 }
 
-
-const getListOfGames = (html) => {
-    const jsonGames = getGameJson(html);
-    const jsonParsed = parseGameJson(jsonGames);
-    return jsonParsed;
-}
 
 const getListOfProfiles = (html) => {
     const jsonProfiles = getProfileJson(html, /"edge_related_profiles":\{"edges":\[.*\}\}\]\}/);
