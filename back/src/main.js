@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(express.static("express"));
 
 app.use('/', async function(req,res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     var result = await main.main();
     res.json(result);
     //__dirname : It will resolve to your project folder.

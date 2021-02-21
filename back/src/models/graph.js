@@ -35,15 +35,13 @@ class Graph {
 
             for (var j of adjValues) {
                 conc += j.name + "[" + j.key + "]" + " / "
-                obj.push({ from: i.key, to: j.key })
+                obj.push({ from: parseInt(i.key), to: parseInt(j.key) })
             }
 
-            obj2.push({ key: i.key, text: i.name })
+            obj2.push({ key: parseInt(i.key), text: i.name })
         }
 
-        console.log({ obj, obj2 });
-
-        return { obj, obj2 }
+        return { obj2, obj }
     }
 }
 

@@ -1,0 +1,9 @@
+<h1>Game Search</h1>
+
+Diagram
+<gojs-diagram #myDiagram [initDiagram]='initDiagram' [nodeDataArray]='diagramNodeData' [linkDataArray]='diagramLinkData'
+  [divClassName]='diagramDivClassName' [modelData]='diagramModelData' [skipsDiagramUpdate]='skipsDiagramUpdate'
+  (modelChange)='diagramModelChange($event)'>
+</gojs-diagram>
+
+<button mat-button (click)="getGames()">Get</button>
