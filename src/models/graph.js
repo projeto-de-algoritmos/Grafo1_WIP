@@ -1,24 +1,27 @@
 class Graph {
-    constructor(firstGame) {
-        this.adjList = new Map().set(firstGame, []);
+    constructor(depth) {
+        this.adjList = new Map();
+        this.depth = depth;
     }
 
-    addVertex(game) {
+    addVertex(profile) {
         let isEqual = false
         this.adjList.forEach((_, value) => {
-            if (value.key === game.key) {
+            if (value.key === profile.key) {
                 isEqual = true
                 return
             }
         })
         if (!isEqual) {
-            this.adjList.set(game, [])
+            this.adjList.set(profile, [])
         }
     }
 
-    addEdge(gameFather, gameSon) {
-        this.adjList.get(gameFather).push(gameSon)
-        this.addVertex(gameSon);
+    addEdge(profileFathe, profileSon) {
+        if(this.adjList.size < this.depth) {
+            this.adjList.get(profileFathe).push(profileSon)
+            this.addVertex(profileSon);
+        }
     }
 
     printGraph() {
