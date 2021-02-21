@@ -27,6 +27,8 @@ class Graph {
 
     printGraph() {
         var adjKeys = this.adjList.keys()
+        var obj = [];
+        var obj2 = [];
 
         for (var i of adjKeys) {
             var adjValues = this.adjList.get(i)
@@ -34,10 +36,13 @@ class Graph {
 
             for (var j of adjValues) {
                 conc += j.name + "[" + j.key + "]" + " / "
+                obj.push({ from: i.key, to: j.key })
             }
 
-            console.log("\n" + i.name + "[" + i.key + "]" + " -> " + conc + "\n")
+            obj2.push({ key: i.key, text: i.name })
         }
+
+        return { obj, obj2 }
     }
 }
 

@@ -1,14 +1,8 @@
-const express = require('express');
 const crawler = require('./crawler');
 const parser = require('./parser');
 const Graph = require('./models/graph');
 const Game = require('./models/game');
-const path = require("path");
 const { html } = require('cheerio');
-
-const app = new express();
-
-app.listen(3000);
 
 const getGameSiteHtml = async (url) => {
     return await crawler.getHtml({
@@ -38,9 +32,9 @@ async function main() {
         graph.addVertex(game);
 
         var countKey = Object.keys(firstJsonGames).length;
-        if(countKey < 150) {
+        if(countKey < 50) {
             const url = firstJsonGames[key]['link'];
-            console.log(url);
+            // console.log(url);
             const htmlFound = await getGameSiteHtml(url);
             const gamesJson = parser.getListOfGames(htmlFound);
 
@@ -53,12 +47,7 @@ async function main() {
         }
     }
 
-    graph.printGraph();
+    return graph.printGraph();
 }
 
-main();
-
-app.get('/', function(_, response){
-    console.log();
-    response.sendFile(path.join(__dirname + '/view/main.html'));
-});
+module.exports = { main };
