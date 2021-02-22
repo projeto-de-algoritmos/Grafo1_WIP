@@ -1,6 +1,5 @@
 const cheerio = require('cheerio');
 
-
 const getProfileJson = (html, regex) => {
     const $ = cheerio.load(html);
     let json;
@@ -11,6 +10,9 @@ const getProfileJson = (html, regex) => {
                 if (regexResponse[0].includes("edge_related_profiles")) {
                     regexResponse[0] = regexResponse[0].slice(24);
                 }
+                if(regexResponse[0].includes("connected_fb_page")) {
+                    regexResponse[0] = regexResponse[0].slice(0, -20)+'}}';
+                }
                 json = JSON.parse(regexResponse[0]);
             }
         });
@@ -19,13 +21,13 @@ const getProfileJson = (html, regex) => {
 }
 
 const buildFirstProfileJson = (html, url) => {
-    const firstProfile = getProfileJson(html, /\{"@context":.*}/);
+    let firstProfile = getProfileJson(html, /\{"user":\{.*,"connected_fb_page"/);
     const $ = cheerio.load(html);
     let value = {};
     const key = 1;
     value[key] = {
-        alternateName: firstProfile.alternateName,
-        name: firstProfile.name,
+        alternateName: firstProfile.user.username,
+        name: firstProfile.user.full_name,
         profile_link: url,
         profile_image: $("meta[property = 'og:image']").first().attr().content,
     }
@@ -35,15 +37,22 @@ const buildFirstProfileJson = (html, url) => {
 const parseProfileJson = (jsonProfile) => {
     let profiles = jsonProfile['edges'];
     let profilesParsed = {}
+    let stop = 5;
+    let i = 0;
     for (let node of profiles) {
-        let value = {};
-        value = {
-            alternateName: node["node"].username,
-            name: node["node"].full_name,
-            profile_link: "https://www.instagram.com/" + node["node"].username,
-            profile_image: node["node"].profile_pic_url,
+        if (i < stop) {
+            let value = {};
+            value = {
+                alternateName: node["node"].username,
+                name: node["node"].full_name,
+                profile_link: "https://www.instagram.com/" + node["node"].username,
+                profile_image: node["node"].profile_pic_url,
+            }
+            profilesParsed[node["node"].id] = value;
+            i++;
+        } else {
+            break;
         }
-        profilesParsed[node["node"].id] = value
     }
     return profilesParsed;
 }
