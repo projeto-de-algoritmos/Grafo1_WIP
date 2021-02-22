@@ -24,9 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(public appService : AppService,
               public dialog: MatDialog) {}
 
-  ngOnInit() {
-    this.search();
-  }
+  ngOnInit() { }
 
   ngAfterViewInit() {
     this.myDiagramComponent.diagram.addDiagramListener("ObjectSingleClicked", (ev) => {
@@ -68,17 +66,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  nodeClicked(e, obj) {  // executed by click and doubleclick handlers
-    console.log(obj.part.data);
-  }
-
   // initialize diagram / templates
   public initDiagram(): go.Diagram {
-
-    function nodeClicked(e, obj) {  // executed by click and doubleclick handlers
-      console.log(obj.part.data);
-    }
-
     const $ = go.GraphObject.make;
     const diagram = $(go.Diagram, {
       'undoManager.isEnabled': true, // must be set to allow for model change listening
@@ -89,7 +78,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       ),
       initialAutoScale: go.Diagram.UniformToFill,
-      layout: $(go.LayeredDigraphLayout)
+      layout: $(go.LayeredDigraphLayout, { direction: 90 })
     });
   
     // define the Node template
