@@ -1,23 +1,16 @@
-<h1>InstaLink</h1>
+<h1 class="header-style">InstaLink</h1>
 
-<mat-label>Digite o insta para mostrar o seu grafo de follow</mat-label>
+<mat-label class="text-style">
+    O Instalink é uma plataforma para você poder visualizar os perfis que são parecidos com o seu perfil favorito.<br />
+    Para utilizá-lo basta colocar o link do seu perfil favorito que ele gera o grafo para você.<br />
+</mat-label>
+
+<mat-label class="text-style" style="margin-top: 1em;">Coloque o link do Instagram favorito:</mat-label>
 <br />
-<input matInput [(ngModel)]="firstInsta">
-<br />
-<button mat-button color="primary" (click)="search()">Procurar</button>
-
-<br />
-
-<h3>Diagram</h3>
-
-<div class="myDiagramDiv">
-  <gojs-diagram #myDiagram
-    [initDiagram]='initDiagram'
-    [nodeDataArray]='diagramNodeData'
-    [linkDataArray]='diagramLinkData'
-    [divClassName]='diagramDivClassName'
-    [modelData]='diagramModelData'
-    [skipsDiagramUpdate]='skipsDiagramUpdate'
-    (modelChange)='diagramModelChange($event)'>
-  </gojs-diagram>
+<div class="input-box">
+    <input class="input-style" matInput placeholder="https://www.instagram.com/github" />
+    <button mat-button class="button-style" color="primary" (click)="search()"><strong>Procurar</strong></button>
 </div>
+<br />
+
+<br />

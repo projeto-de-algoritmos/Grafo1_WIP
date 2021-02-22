@@ -30,7 +30,7 @@ import { ModalComponent } from './modal/modal.component';
     MatDialogModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     AppService
