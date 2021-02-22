@@ -5,12 +5,22 @@
     Para utilizá-lo basta colocar o link do seu perfil favorito que ele gera o grafo para você.<br />
 </mat-label>
 
-<mat-label class="text-style" style="margin-top: 1em;">Coloque o link do Instagram favorito:</mat-label>
+<mat-label class="text-style" style="margin-top: 1em;">Coloque o link do seu Instagram favorito:</mat-label>
 <br />
 <div class="input-box">
-    <input class="input-style" matInput placeholder="https://www.instagram.com/github" />
-    <button mat-button class="button-style" color="primary" (click)="search()"><strong>Procurar</strong></button>
+    <input class="input-style" matInput [(ngModel)]="firstInsta" placeholder="https://www.instagram.com/github" />
+    <button mat-button (click)="search()"><strong>Procurar</strong></button>
 </div>
 <br />
+
+<gojs-diagram #myDiagram
+    [initDiagram]='initDiagram'
+    [nodeDataArray]='diagramNodeData'
+    [linkDataArray]='diagramLinkData'
+    [divClassName]='diagramDivClassName'
+    [modelData]='diagramModelData'
+    [skipsDiagramUpdate]='skipsDiagramUpdate'
+    (modelChange)='diagramModelChange($event)'>
+</gojs-diagram>
 
 <br />
