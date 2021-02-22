@@ -20,9 +20,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   public diagramLinkData: Array<go.ObjectData> = [];
   public firstInsta: string = '';
   public deph: number;
+  public status: boolean = true;
 
-  constructor(public appService : AppService,
-              public dialog: MatDialog) {}
+  constructor(public appService: AppService,
+    public dialog: MatDialog) { }
 
   ngOnInit() { }
 
@@ -47,18 +48,23 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    this.appService.getData(this.firstInsta, this.deph).subscribe((result) =>  {
-      this.diagramNodeData = result['obj2'];
-      this.diagramLinkData = result['obj'];
+    if (this.firstInsta.includes("instagram.com/")) {
+      if (!this.firstInsta.includes("https://")) {
+        this.firstInsta = "https://www." + this.firstInsta;
+      }
+      this.appService.getData(this.firstInsta, this.deph).subscribe((result) => {
+        this.diagramNodeData = result['obj2'];
+        this.diagramLinkData = result['obj'];
 
-      const model = new go.GraphLinksModel();
+        const model = new go.GraphLinksModel();
 
-      model.linkKeyProperty = 'key';
-      model.nodeDataArray = this.diagramNodeData;
-      model.linkDataArray = this.diagramLinkData;
-  
-      this.myDiagramComponent.diagram.model = model;
-    });
+        model.linkKeyProperty = 'key';
+        model.nodeDataArray = this.diagramNodeData;
+        model.linkDataArray = this.diagramLinkData;
+
+        this.myDiagramComponent.diagram.model = model;
+      });
+    }
   }
 
   // initialize diagram / templates
@@ -75,16 +81,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       initialAutoScale: go.Diagram.UniformToFill,
       layout: $(go.LayeredDigraphLayout, { direction: 90 })
     });
-  
+
     // define the Node template
     diagram.nodeTemplate =
       $(go.Node, "Auto",  // the whole node panel
-      // define the node's outer shape, which will surround the TextBlock
+        // define the node's outer shape, which will surround the TextBlock
         // {
         //   click: function(e, obj) { this.nodeClicked(obj.part.data); }
         // },
         $(go.Shape, "Circle",
-          { fill: "CornflowerBlue", stroke: "black", spot1: new go.Spot(0, 0, 5, 5), spot2: new go.Spot(1, 1, -5, -5) }),
+          { fill: "#C235A7", stroke: "black", spot1: new go.Spot(0, 0, 5, 5), spot2: new go.Spot(1, 1, -5, -5) }),
         $(go.TextBlock,
           { font: "bold 10pt helvetica, bold arial, sans-serif", textAlign: "center", maxSize: new go.Size(100, NaN) },
           new go.Binding("text", "name"))
@@ -108,21 +114,21 @@ export class AppComponent implements OnInit, AfterViewInit {
             new go.Binding("text", "name"))
         )
       );
-  
+
     return diagram;
   }
 
   public diagramDivClassName: string = 'myDiagram';
   public diagramModelData = { prop: 'value' };
   public skipsDiagramUpdate = false;
-  
+
   // When the diagram model changes, update app data to reflect those changes
-  public diagramModelChange = function(changes: go.IncrementalData) {
+  public diagramModelChange = function (changes: go.IncrementalData) {
     // when setting state here, be sure to set skipsDiagramUpdate: true since GoJS already has this update
     // (since this is a GoJS model changed listener event function)
     // this way, we don't log an unneeded transaction in the Diagram's undoManager history
     this.skipsDiagramUpdate = true;
-  
+
     this.diagramNodeData = DataSyncService.syncNodeData(changes, this.diagramNodeData);
     this.diagramLinkData = DataSyncService.syncLinkData(changes, this.diagramLinkData);
     this.diagramModelData = DataSyncService.syncModelData(changes, this.diagramModelData);
