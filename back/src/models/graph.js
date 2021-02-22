@@ -7,7 +7,7 @@ class Graph {
     addVertex(profile) {
         let isEqual = false
         this.adjList.forEach((_, value) => {
-            if (value.key === profile.key) {
+            if (value.profile_name === profile.profile_name) {
                 isEqual = true
                 return
             }
@@ -17,10 +17,15 @@ class Graph {
         }
     }
 
-    addEdge(profileFathe, profileSon) {
+    addEdge(profileFather, profileSon) {
         if(this.adjList.size < this.depth) {
-            this.adjList.get(profileFathe).push(profileSon)
-            this.addVertex(profileSon);
+            this.adjList.forEach((_, value) => {
+                if (value.profile_name === profileFather.profile_name) {
+                    console.log(value.profile_name, profileFather.profile_name);
+                    this.adjList.get(value).push(profileSon)
+                    this.addVertex(profileSon);
+                }
+            })
         }
     }
 
