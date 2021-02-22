@@ -5,7 +5,7 @@ const getProfileJson = (html, regex) => {
     let json;
     $("script").map((_, script) => {
         script.children.map(child => {
-            const regexResponse = regex.exec(child.data);
+            let regexResponse = regex.exec(child.data);
             if (regexResponse != null) {
                 if (regexResponse[0].includes("edge_related_profiles")) {
                     regexResponse[0] = regexResponse[0].slice(24);
