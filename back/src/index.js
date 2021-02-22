@@ -47,9 +47,12 @@ const bfs = async (graph, listInstaJson, depth) => {
     }
 }
 
-async function main(instaLink) {
+async function main(instaLink, deph) {
     // Create Graph for Insta Profile
-    const depth = 25;
+    let depth = deph;
+    if (deph > 25 || deph === undefined || deph === null || deph < 0) {
+        deph = 1;
+    }
     let graph = new Graph(depth);
     let firstProfile = await getFirstProfile(instaLink, graph);
 

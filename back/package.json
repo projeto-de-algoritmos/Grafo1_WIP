@@ -2,9 +2,9 @@
   "name": "Grafos1_WIP",
   "version": "1.0.0",
   "description": "**Número da Lista**: X<br> **Conteúdo da Disciplina**: XXXXXXXXXX<br>",
-  "main": "index.js",
+  "main": "controller.js",
   "scripts": {
-    "start": "node src/main.js"
+    "start": "node src/controller.js"
   },
   "repository": {
     "type": "git",
