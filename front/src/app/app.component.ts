@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public diagramNodeData: Array<go.ObjectData> = [];
   public diagramLinkData: Array<go.ObjectData> = [];
   public firstInsta: string = '';
-  public visible: boolean = false;
+  public deph: number;
 
   constructor(public appService : AppService,
               public dialog: MatDialog) {}
@@ -46,13 +46,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.dialog.open(ModalComponent, dialogConfig);
   }
 
-  showGraph() {
-    this.visible = true;
-  }
-
   search() {
-    this.appService.getData(this.firstInsta).subscribe((result) =>  {
-      this.showGraph();
+    this.appService.getData(this.firstInsta, this.deph).subscribe((result) =>  {
       this.diagramNodeData = result['obj2'];
       this.diagramLinkData = result['obj'];
 
