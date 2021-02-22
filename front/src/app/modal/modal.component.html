@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>{{ name }}</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <img mat-card-image [src]="image" alt="Photo of a Shiba Inu">
+          <br />
+          <mat-card-title>{{ nick }}</mat-card-title>
+          <br />
+        </mat-card-header>
+        <mat-card-content>
+            <a target="_blank" [href]="link">{{ link }}</a>
+        </mat-card-content>
+      </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions allign="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
