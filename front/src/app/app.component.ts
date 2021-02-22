@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('myDiagram', { static: true }) public myDiagramComponent: DiagramComponent;
 
-  public diagramNodeData: Array<go.ObjectData> = [];
+  public diagramNodeData: Array<go.ObjectData> = [{ key: 1, name: 'Calebe Rios', profile_name: 'caleberios', link: 'https://www.instagram.com/caleberios/', profile_image: 'https://scontent-gig2-1.cdninstagram.com/v/t51.2885-19/s320x320/49646933_225049875109437_9152404127559450624_n.jpg?_nc_ht=scontent-gig2-1.cdninstagram.com&_nc_ohc=7gWkEggy9fUAX_mcvGh&tp=1&oh=3836cc44b0e9853bba9a5e54296fcc3d&oe=605BF0A2'  }];
   public diagramLinkData: Array<go.ObjectData> = [];
   public firstInsta: string = '';
   public deph: number;
@@ -35,13 +35,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   public openDialog(people) {
     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    dialogConfig.position = {
-      top: '0',
-      left: '0'
-    };
     dialogConfig.data = people;
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.maxHeight = '100%';
+    dialogConfig.maxWidth = '100%';
 
     this.dialog.open(ModalComponent, dialogConfig);
   }
