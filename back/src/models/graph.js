@@ -21,7 +21,6 @@ class Graph {
         if(this.adjList.size < this.depth) {
             this.adjList.forEach((_, value) => {
                 if (value.profile_name === profileFather.profile_name) {
-                    console.log(value.profile_name, profileFather.profile_name);
                     this.adjList.get(value).push(profileSon)
                     this.addVertex(profileSon);
                 }
