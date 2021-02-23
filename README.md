@@ -10,9 +10,15 @@
 | 16/0144485  |  [Saleh Nazih Abdel Kader](https://github.com/devsalula) |
 
 ## Sobre 
-O InstaLink é um webcrawler que mapeia usuários famosos do Instagram com outros usuários famosos.
+O InstaLink é um WebScraping que mapeia usuários famosos do Instagram com outros usuários famosos.
+A ideia é que você possa ver quais são os perfis ligados diretamente com o seu perfil favorito.
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+
+![Captura de tela de 2021-02-22 21-56-12](https://user-images.githubusercontent.com/35435199/108790330-3107ca80-755b-11eb-88d4-b60e0f29b37d.png)
+
+![Captura de tela de 2021-02-22 22-05-01](https://user-images.githubusercontent.com/35435199/108790315-251c0880-755b-11eb-8983-af168767db01.png)
+
+![Captura de tela de 2021-02-22 22-05-28](https://user-images.githubusercontent.com/35435199/108790297-1a617380-755b-11eb-9ec0-6e0e3e767fd6.png)
 
 ## Instalação 
 **Linguagem**: Javascript<br>
@@ -55,4 +61,6 @@ Para fazer uso do projeto, entre somente na rota no front. Lá você irá encont
 Após seguir as instruções presente na página, você poderá visualizar o grafo com as informações obtidas e ainda ver mais informações clicando em cada nó.
 
 ## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+O Projeto tem um range máximo de busca de 25 nós devido o custo de processamento.
+Além disso, por questão de arquitetura do Instagram e privacidade, só são permitidos a utilização de
+perfis com pelo menos mais de 5000 seguidores.
