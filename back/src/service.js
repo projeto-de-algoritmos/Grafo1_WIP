@@ -1,7 +1,8 @@
 const crawler = require('./crawler');
-const parser = require('./parser');
+const Parser = require('./parser');
 const Graph = require('./models/graph');
 const Profile = require('./models/profile');
+const { html } = require('cheerio');
 
 const getProfileSiteHtml = async (url) => {
     return await crawler.getHtml({
@@ -15,7 +16,8 @@ const getProfileSiteHtml = async (url) => {
 
 const getFirstProfile = async (url, graph) => {
     const htmlFound = await getProfileSiteHtml(url);
-    const firstProfileJson = parser.buildFirstProfileJson(htmlFound, url);
+    const parser = new Parser(htmlFound);
+    const firstProfileJson = parser.buildFirstProfileJson(url);
     graph.addVertex(new Profile(1, firstProfileJson[1]));
     const profilesJson = parser.getListOfProfiles(htmlFound);
     return profilesJson;
@@ -31,8 +33,10 @@ const bfs = async (graph, listInstaJson, depth) => {
             break;
         }
         queue.shift();
+        let parser;
         if (individualNode.key !== 1){
             const htmlFound = await getProfileSiteHtml(individualNode.link);
+            parser = new Parser(htmlFound);
             listInstaJson = parser.getListOfProfiles(htmlFound);
         }
         for (let key in listInstaJson) {
